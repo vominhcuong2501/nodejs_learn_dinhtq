@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const app = express()
 const port = 3000
 const userRoutes = require('./routes/userRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+
 
 
 // tro ve file muon hien thi
@@ -15,9 +17,9 @@ app.get('/', function (req, res) {
     res.render('pages/index');
 });
 
-app.get('/*', (req, res) => {
-    res.send('404 not found')
-})
+// app.get('/*', (req, res) => {
+//     res.send('404 not found')
+// })
 
 
 // connect store
@@ -72,7 +74,8 @@ app.get('/api/json', (req, res) => {
     });
 });
 
-app.use('/users', userRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/profile', profileRoutes);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

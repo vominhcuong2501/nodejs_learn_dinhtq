@@ -3,17 +3,39 @@
 // Simulating a database with an array
 let users = [];
 
+const User = require('./../models/user');
+const Profile = require('./../models/profile');
+const { json } = require('express');
+
+
 // Controller to get all users
-const getAllUsers = (req, res) => {
-    res.json(users);
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find(); // Retrieve all users from the database
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
 };
 
 // Controller to create a new user
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
     const { name, email, age, color } = req.body;
-    const newUser = { name, email, age, color };
-    users.push(newUser);
-    res.status(201).json(newUser);
+    const newUser = new User({ name, email, age, color });
+
+    try {
+        const saveUser = await newUser.save();
+
+        const profile = new Profile({ name, email, phone: 'PHONE', address: "ADDRESS", country: "COUNTRY", image: "IMAGE", user_id: saveUser._id });
+
+        const saveProfile = await profile.save();
+
+
+        res.status(201).json(saveUser.populate('profile'));
+    } catch (error) {
+        console.log('======', error);
+        res.status(500).json({ error: 'Failed to create item' });
+    }
 };
 
 // Controller to get a single user by index
