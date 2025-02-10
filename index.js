@@ -24,7 +24,7 @@ app.get('/', function (req, res) {
 app.use(express.json());
 // mongodb+srv://minhcuongvo2501:123123123@cluster0.vc8zkff.mongodb.net/warehouse
 
-mongoose.connect('mongodb+srv://minhcuongvo2501:123123123@test-dababase.4kteo.mongodb.net/test').then(() => {
+mongoose.connect(process.env.mongo_connection).then(() => {
     console.log('Connected to MongoDB');
 }).catch((error) => {
     console.error('Error connecting to MongoDB:', error);
