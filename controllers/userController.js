@@ -30,7 +30,6 @@ const createUser = async (req, res) => {
 
         const saveProfile = await profile.save();
 
-
         res.status(201).json(saveUser.populate('profile'));
     } catch (error) {
         console.log('======', error);

@@ -6,8 +6,6 @@ const port = 3000
 const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 
-
-
 // tro ve file muon hien thi
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -24,21 +22,20 @@ app.get('/', function (req, res) {
 
 // connect store
 app.use(express.json());
+// mongodb+srv://minhcuongvo2501:123123123@cluster0.vc8zkff.mongodb.net/warehouse
 
-mongoose.connect('mongodb+srv://minhcuongvo2501:123123123@test-dababase.4kteo.mongodb.net/?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect('mongodb+srv://minhcuongvo2501:123123123@test-dababase.4kteo.mongodb.net/test').then(() => {
     console.log('Connected to MongoDB');
 }).catch((error) => {
     console.error('Error connecting to MongoDB:', error);
+}).finally(() => {
+    console.log('Connection to MongoDB closed');
 });
 
 const itemSchema = new mongoose.Schema({
     name: { type: String, required: true },
     quantity: { type: Number, required: true },
 });
-
 
 const Item = mongoose.model('Item', itemSchema);
 
@@ -77,7 +74,8 @@ app.get('/api/json', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 
-app.listen(port, () => {
+app.listen(port, async () => {
     console.log(`Example app listening on port ${port}`)
+    // mongodb+srv://admin:root@cluster0.vc8zkff.mongodb.net/warehouse
 })
 
